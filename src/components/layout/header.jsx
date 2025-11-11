@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const [current, setCurrent] = useState('mail');
 
   const onClick = (e) => {
@@ -28,11 +30,15 @@ const Header = () => {
       icon: <SettingOutlined />,
       children: [
         { 
-            label: 'Đăng nhập',
+            label: <Link to="/login">Đăng nhập</Link>,
             key: 'login' 
         },
         { 
-            label: 'Đăng xuất',
+            label: <span onClick={() => {
+              localStorage.clear("access_token");
+              setCurrent("home");
+              navigate("/")
+            }}>Đăng xuất</span>,
             key: 'logout'
         },
       ],
