@@ -1,23 +1,27 @@
-import { Button, Form, Input, Card, notification } from 'antd';
+import { Button, Form, Input, Card, notification, Typography } from 'antd';
 import { createUserApi } from '../util/api';
 import { useNavigate } from 'react-router-dom';
 
+const { Title, Text } = Typography;
+
 const RegisterPage = () => {
   const navigate = useNavigate();
+
   const onFinish = async (values) => {
-    const {name, email, password} = values;
+    const { name, email, password } = values;
     const res = await createUserApi(name, email, password);
-    if(res){
+
+    if (res) {
       notification.success({
-        message: "Create user",
-        description: "Success"
+        message: 'Create user',
+        description: 'Success',
       });
-      navigate("/login");
-    }else{
+      navigate('/login');
+    } else {
       notification.error({
-        message: "Create user",
-        description: "error"    
-      })
+        message: 'Create user',
+        description: 'Error',
+      });
     }
   };
 
@@ -28,32 +32,48 @@ const RegisterPage = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: '#f5f6fa',
+        background: 'linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)',
+        padding: '1rem',
       }}
     >
       <Card
-        title="Register Account"
         bordered={false}
         style={{
           width: 400,
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          borderRadius: 12,
+          borderRadius: 16,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+          backgroundColor: '#ffffffee',
+          backdropFilter: 'blur(8px)',
+          padding: '2rem',
         }}
       >
+        <Title level={2} style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          Register Account
+        </Title>
+        <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginBottom: '2rem' }}>
+          Please fill in your details to create an account
+        </Text>
+
         <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          name="register"
+          layout="vertical"
           onFinish={onFinish}
           autoComplete="off"
-          layout='vertical'
         >
+          <Form.Item
+            label="Name"
+            name="name"
+            rules={[{ required: true, message: 'Please input your name!' }]}
+          >
+            <Input placeholder="Enter name" size="large" />
+          </Form.Item>
+
           <Form.Item
             label="Email"
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input placeholder="Enter email" />
+            <Input placeholder="Enter email" size="large" />
           </Form.Item>
 
           <Form.Item
@@ -61,20 +81,12 @@ const RegisterPage = () => {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password placeholder="Enter password" />
-          </Form.Item>
-
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: 'Please input your name!' }]}
-          >
-            <Input placeholder="Enter name" />
+            <Input.Password placeholder="Enter password" size="large" />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              Submit
+            <Button type="primary" htmlType="submit" block size="large" style={{ borderRadius: 8 }}>
+              Register
             </Button>
           </Form.Item>
         </Form>
